@@ -35,6 +35,26 @@ const WMO_LABEL = {
   95: 'Thunderstorm', 96: 'Thunderstorm', 99: 'Thunderstorm',
 }
 
+// Get API URL from environment with fallback
+const WEATHER_API_URL = import.meta.env.VITE_WEATHER_API_URL
+
+const TIMEOUT_MS = parseInt(import.meta.env.VITE_WEATHER_TIMEOUT) || 5000
+
+// Create fetch with timeout
+const fetchWithTimeout = async (url, timeout = TIMEOUT_MS) => {
+  const controller = new AbortController()
+  const id = setTimeout(() => controller.abort(), timeout)
+  
+  try {
+    const response = await fetch(url, { signal: controller.signal })
+    clearTimeout(id)
+    return response
+  } catch (error) {
+    clearTimeout(id)
+    throw error
+  }
+}
+
 function getFarmingAdvice(code, rain, maxTemp, minTemp, wind) {
   const tasks = []
 
@@ -87,24 +107,46 @@ export default function Climate() {
   const [alerts, setAlerts] = useState([])
 
   useEffect(() => {
-    setLoading(true)
-    setError(false)
-    setWeather(null)
-    const { lat, lon } = district
-    fetch(
-      `https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}` +
-      `&daily=weathercode,temperature_2m_max,temperature_2m_min,precipitation_sum,windspeed_10m_max` +
-      `&current_weather=true&timezone=Africa%2FBlantyre&forecast_days=7`
-    )
-      .then(r => r.json())
-      .then(data => {
+    let isMounted = true
+    
+    const fetchData = async () => {
+      setLoading(true)
+      setError(false)
+      setWeather(null)
+      
+      try {
+        const { lat, lon } = district
+        const url = `${WEATHER_API_URL}?latitude=${lat}&longitude=${lon}` +
+          `&daily=weathercode,temperature_2m_max,temperature_2m_min,precipitation_sum,windspeed_10m_max` +
+          `&current_weather=true&timezone=Africa%2FBlantyre&forecast_days=7`
+        
+        const response = await fetchWithTimeout(url)
+        const data = await response.json()
+        
+        if (!isMounted) return
+        
         if (data.error) throw new Error(data.reason)
         setWeather(data)
-      })
-      .catch(() => setError(true))
-      .finally(() => setLoading(false))
+      } catch (err) {
+        if (isMounted) setError(true)
+        console.error('Weather fetch error:', err)
+      } finally {
+        if (isMounted) setLoading(false)
+      }
+    }
 
-    alertsApi.getAll().then(r => setAlerts(r.data)).catch(() => {})
+    fetchData()
+    
+    // Fetch alerts
+    alertsApi.getAll()
+      .then(r => {
+        if (isMounted) setAlerts(r.data)
+      })
+      .catch(() => {})
+    
+    return () => {
+      isMounted = false
+    }
   }, [district])
 
   const current = weather?.current_weather

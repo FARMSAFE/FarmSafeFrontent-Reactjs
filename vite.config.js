@@ -8,6 +8,12 @@ export default defineConfig(({ mode }) => {
     plugins: [react()],
     server: {
       port: 5173,
+      host: true,  
+      allowedHosts: [
+       
+        'farmsafe-xt65.onrender.com',
+        '.onrender.com' 
+      ],
       proxy: {
         '/api': {
           target: env.VITE_API_BASE_URL,
@@ -16,7 +22,7 @@ export default defineConfig(({ mode }) => {
           secure: false,
         },
         '/socket.io': {
-          target: env.VITE_SOCKET_URL || 'http://localhost:3000',
+          target: env.VITE_SOCKET_URL,
           ws: true,
           changeOrigin: true
         }
