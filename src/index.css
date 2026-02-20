@@ -1,1 +1,62 @@
-@import "tailwindcss";
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  * { box-sizing: border-box; }
+  
+  html {
+    scroll-behavior: smooth;
+  }
+
+  body {
+    font-family: 'Satoshi', sans-serif;
+    background-color: #faf8f5;
+    color: #1a1208;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    font-family: 'Cabinet Grotesk', sans-serif;
+    font-weight: 700;
+  }
+}
+
+@layer components {
+  .btn-primary {
+    @apply bg-leaf-600 hover:bg-leaf-700 text-white font-semibold px-5 py-2.5 rounded-xl transition-all duration-200 active:scale-95 disabled:opacity-50 disabled:cursor-not-allowed;
+  }
+  .btn-secondary {
+    @apply bg-earth-100 hover:bg-earth-200 text-earth-800 font-semibold px-5 py-2.5 rounded-xl transition-all duration-200 active:scale-95;
+  }
+  .btn-outline {
+    @apply border-2 border-leaf-600 text-leaf-600 hover:bg-leaf-50 font-semibold px-5 py-2.5 rounded-xl transition-all duration-200 active:scale-95;
+  }
+  .btn-danger {
+    @apply bg-red-500 hover:bg-red-600 text-white font-semibold px-5 py-2.5 rounded-xl transition-all duration-200 active:scale-95;
+  }
+  .input {
+    @apply w-full border border-earth-200 bg-white rounded-xl px-4 py-2.5 text-earth-900 placeholder-earth-300 focus:outline-none focus:ring-2 focus:ring-leaf-400 focus:border-transparent transition-all duration-200;
+  }
+  .card {
+    @apply bg-white rounded-2xl border border-earth-100 shadow-sm;
+  }
+  .badge-farmer {
+    @apply bg-leaf-100 text-leaf-700 text-xs font-semibold px-2.5 py-1 rounded-full;
+  }
+  .badge-buyer {
+    @apply bg-sky-100 text-sky-700 text-xs font-semibold px-2.5 py-1 rounded-full;
+  }
+  .badge-admin {
+    @apply bg-earth-200 text-earth-700 text-xs font-semibold px-2.5 py-1 rounded-full;
+  }
+}
+
+/* Scrollbar */
+::-webkit-scrollbar { width: 6px; }
+::-webkit-scrollbar-track { background: #f7f3ee; }
+::-webkit-scrollbar-thumb { background: #c4a882; border-radius: 3px; }
+::-webkit-scrollbar-thumb:hover { background: #b08a5c; }
+
+/* Page transition */
+.page-enter { animation: fadeUp 0.4s ease forwards; }
