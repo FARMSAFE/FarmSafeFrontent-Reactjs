@@ -19,7 +19,7 @@ export default function AdminDashboard() {
   const [cropModal, setCropModal] = useState(false)
   const [alertModal, setAlertModal] = useState(false)
   const [climateModal, setClimateModal] = useState(false)
-  const [cropForm, setCropForm] = useState({ name:'', localName:'', category:'cereals', unitOfMeasure:'kg', description:'', growthPeriodDays:'' })
+  const [cropForm, setCropForm] = useState({ name:'', localName:'', category:'maize', unitOfMeasure:'kg', description:'', growthPeriodDays:'' })
   const [alertForm, setAlertForm] = useState({ title:'', message:'', type:'weather', severity:'medium', affectedDistricts:[], expiresAt:'' })
   const [climateForm, setClimateForm] = useState({ district:'', date:'', temperatureMin:'', temperatureMax:'', rainfall:'', humidity:'', windSpeed:'', condition:'', recommendation:'' })
   const [submitting, setSubmitting] = useState(false)
@@ -233,36 +233,145 @@ export default function AdminDashboard() {
         )}
       </div>
 
-      {/* Add Crop Modal */}
+      {/* Add Crop Modal - Updated with comprehensive Malawian crops */}
       <Modal open={cropModal} onClose={() => setCropModal(false)} title="Add Crop to Catalogue">
         <form onSubmit={handleCreateCrop} className="space-y-4">
           <div className="grid grid-cols-2 gap-3">
-            <FormField label="Crop Name" required><input className="input" placeholder="Maize" value={cropForm.name} onChange={setCropF('name')} required /></FormField>
-            <FormField label="Local Name"><input className="input" placeholder="Chimanga" value={cropForm.localName} onChange={setCropF('localName')} /></FormField>
+            <FormField label="Crop Name" required>
+              <input className="input" placeholder="e.g., Maize" value={cropForm.name} onChange={setCropF('name')} required />
+            </FormField>
+            <FormField label="Local Name">
+              <input className="input" placeholder="e.g., Chimanga" value={cropForm.localName} onChange={setCropF('localName')} />
+            </FormField>
           </div>
+          
           <div className="grid grid-cols-2 gap-3">
             <FormField label="Category" required>
               <select className="input" value={cropForm.category} onChange={setCropF('category')}>
-                {['cereals','legumes','vegetables','fruits','roots','cash_crops'].map(c => <option key={c} value={c}>{c}</option>)}
+                <optgroup label="Cereals & Grains">
+                  <option value="maize">Maize (Corn)</option>
+                  <option value="rice">Rice</option>
+                  <option value="sorghum">Sorghum</option>
+                  <option value="millet">Millet</option>
+                  <option value="wheat">Wheat</option>
+                  <option value="barley">Barley</option>
+                </optgroup>
+                <optgroup label="Legumes & Pulses">
+                  <option value="groundnuts">Groundnuts</option>
+                  <option value="beans">Beans (Various)</option>
+                  <option value="soybeans">Soybeans</option>
+                  <option value="pigeon_peas">Pigeon Peas</option>
+                  <option value="cowpeas">Cowpeas</option>
+                  <option value="chickpeas">Chickpeas</option>
+                  <option value="sugar_beans">Sugar Beans</option>
+                  <option value="kidney_beans">Kidney Beans</option>
+                  <option value="lima_beans">Lima Beans</option>
+                  <option value="peas">Green Peas</option>
+                  <option value="lentils">Lentils</option>
+                </optgroup>
+                <optgroup label="Roots & Tubers">
+                  <option value="cassava">Cassava</option>
+                  <option value="sweet_potatoes">Sweet Potatoes</option>
+                  <option value="irish_potatoes">Irish Potatoes</option>
+                  <option value="yams">Yams</option>
+                  <option value="taro">Taro (Cocoyam)</option>
+                  <option value="carrots">Carrots</option>
+                  <option value="onions">Onions</option>
+                  <option value="garlic">Garlic</option>
+                  <option value="ginger">Ginger</option>
+                </optgroup>
+                <optgroup label="Vegetables">
+                  <option value="tomatoes">Tomatoes</option>
+                  <option value="cabbage">Cabbage</option>
+                  <option value="rape">Rape (Kanoni)</option>
+                  <option value="mustard">Mustard (Chisoso)</option>
+                  <option value="okra">Okra (Therere)</option>
+                  <option value="pumpkin_leaves">Pumpkin Leaves (Nkhwani)</option>
+                  <option value="amaranthus">Amaranthus (Bonongwe)</option>
+                  <option value="eggplant">Eggplant (Garden Eggs)</option>
+                  <option value="peppers">Peppers</option>
+                  <option value="spinach">Spinach</option>
+                  <option value="lettuce">Lettuce</option>
+                  <option value="cucumber">Cucumber</option>
+                  <option value="pumpkin">Pumpkin</option>
+                  <option value="butternut">Butternut Squash</option>
+                  <option value="green_beans">Green Beans</option>
+                  <option value="broccoli">Broccoli</option>
+                  <option value="cauliflower">Cauliflower</option>
+                  <option value="kale">Kale</option>
+                </optgroup>
+                <optgroup label="Fruits">
+                  <option value="bananas">Bananas</option>
+                  <option value="mangoes">Mangoes</option>
+                  <option value="oranges">Oranges</option>
+                  <option value="pineapples">Pineapples</option>
+                  <option value="avocados">Avocados</option>
+                  <option value="papaya">Papaya (Pawpaw)</option>
+                  <option value="guavas">Guavas</option>
+                  <option value="lemons">Lemons</option>
+                  <option value="limes">Limes</option>
+                  <option value="watermelons">Watermelons</option>
+                  <option value="sugar_cane">Sugar Cane</option>
+                  <option value="strawberries">Strawberries</option>
+                  <option value="passion_fruit">Passion Fruit</option>
+                  <option value="granadilla">Granadilla</option>
+                  <option value="tangerines">Tangerines</option>
+                  <option value="grapefruit">Grapefruit</option>
+                  <option value="apples">Apples</option>
+                  <option value="peaches">Peaches</option>
+                  <option value="plums">Plums</option>
+                  <option value="grapes">Grapes</option>
+                </optgroup>
+                <optgroup label="Cash Crops">
+                  <option value="tobacco">Tobacco</option>
+                  <option value="tea">Tea</option>
+                  <option value="coffee">Coffee</option>
+                  <option value="cotton">Cotton</option>
+                  <option value="sugar">Sugar</option>
+                  <option value="macadamia">Macadamia Nuts</option>
+                  <option value="cashew">Cashew Nuts</option>
+                  <option value="sunflower">Sunflower</option>
+                  <option value="sesame">Sesame</option>
+                </optgroup>
+                <optgroup label="Other">
+                  <option value="other">Other</option>
+                </optgroup>
               </select>
             </FormField>
+            
             <FormField label="Unit of Measure" required>
               <select className="input" value={cropForm.unitOfMeasure} onChange={setCropF('unitOfMeasure')}>
-                {['kg','ton','bag','crate','bunch'].map(u => <option key={u} value={u}>{u}</option>)}
+                {['kg','ton','bag','crate','bunch','piece','dozen'].map(u => <option key={u} value={u}>{u}</option>)}
               </select>
             </FormField>
           </div>
-          <FormField label="Growth Period (days)"><input type="number" className="input" placeholder="90" value={cropForm.growthPeriodDays} onChange={setCropF('growthPeriodDays')} /></FormField>
-          <FormField label="Description"><textarea className="input resize-none" rows={2} value={cropForm.description} onChange={setCropF('description')} /></FormField>
-          <div className="flex gap-3"><button type="button" onClick={() => setCropModal(false)} className="btn-secondary flex-1">Cancel</button><button type="submit" disabled={submitting} className="btn-primary flex-1 flex items-center justify-center gap-2">{submitting ? <><Spinner size="sm"/>Adding...</> : 'Add Crop'}</button></div>
+          
+          <FormField label="Growth Period (days)">
+            <input type="number" className="input" placeholder="e.g., 90" value={cropForm.growthPeriodDays} onChange={setCropF('growthPeriodDays')} />
+          </FormField>
+          
+          <FormField label="Description">
+            <textarea className="input resize-none" rows={2} placeholder="Describe the crop variety, characteristics, etc." value={cropForm.description} onChange={setCropF('description')} />
+          </FormField>
+          
+          <div className="flex gap-3">
+            <button type="button" onClick={() => setCropModal(false)} className="btn-secondary flex-1">Cancel</button>
+            <button type="submit" disabled={submitting} className="btn-primary flex-1 flex items-center justify-center gap-2">
+              {submitting ? <><Spinner size="sm"/>Adding...</> : 'Add Crop'}
+            </button>
+          </div>
         </form>
       </Modal>
 
       {/* Alert Modal */}
       <Modal open={alertModal} onClose={() => setAlertModal(false)} title="Broadcast Alert">
         <form onSubmit={handleCreateAlert} className="space-y-4">
-          <FormField label="Title" required><input className="input" placeholder="Heavy Rainfall Warning" value={alertForm.title} onChange={setAlertF('title')} required /></FormField>
-          <FormField label="Message" required><textarea className="input resize-none" rows={3} placeholder="Alert details..." value={alertForm.message} onChange={setAlertF('message')} required /></FormField>
+          <FormField label="Title" required>
+            <input className="input" placeholder="Heavy Rainfall Warning" value={alertForm.title} onChange={setAlertF('title')} required />
+          </FormField>
+          <FormField label="Message" required>
+            <textarea className="input resize-none" rows={3} placeholder="Alert details..." value={alertForm.message} onChange={setAlertF('message')} required />
+          </FormField>
           <div className="grid grid-cols-2 gap-3">
             <FormField label="Type">
               <select className="input" value={alertForm.type} onChange={setAlertF('type')}>
@@ -279,14 +388,25 @@ export default function AdminDashboard() {
             <div className="flex flex-wrap gap-2">
               {DISTRICTS.map(d => (
                 <button key={d} type="button" onClick={() => toggleAlertDistrict(d)}
-                  className={`text-xs px-3 py-1.5 rounded-full border transition-all ${alertForm.affectedDistricts.includes(d) ? 'bg-red-100 border-red-300 text-red-700' : 'border-earth-200 text-earth-500 hover:border-earth-300'}`}>
+                  className={`text-xs px-3 py-1.5 rounded-full border transition-all ${
+                    alertForm.affectedDistricts.includes(d) 
+                      ? 'bg-red-100 border-red-300 text-red-700' 
+                      : 'border-earth-200 text-earth-500 hover:border-earth-300'
+                  }`}>
                   {d}
                 </button>
               ))}
             </div>
           </FormField>
-          <FormField label="Expires At"><input type="datetime-local" className="input" value={alertForm.expiresAt} onChange={setAlertF('expiresAt')} /></FormField>
-          <div className="flex gap-3"><button type="button" onClick={() => setAlertModal(false)} className="btn-secondary flex-1">Cancel</button><button type="submit" disabled={submitting} className="btn-primary flex-1 flex items-center justify-center gap-2">{submitting ? <><Spinner size="sm"/>Broadcasting...</> : 'Broadcast Alert'}</button></div>
+          <FormField label="Expires At">
+            <input type="datetime-local" className="input" value={alertForm.expiresAt} onChange={setAlertF('expiresAt')} />
+          </FormField>
+          <div className="flex gap-3">
+            <button type="button" onClick={() => setAlertModal(false)} className="btn-secondary flex-1">Cancel</button>
+            <button type="submit" disabled={submitting} className="btn-primary flex-1 flex items-center justify-center gap-2">
+              {submitting ? <><Spinner size="sm"/>Broadcasting...</> : 'Broadcast Alert'}
+            </button>
+          </div>
         </form>
       </Modal>
 
@@ -300,17 +420,36 @@ export default function AdminDashboard() {
                 {DISTRICTS.map(d => <option key={d} value={d}>{d}</option>)}
               </select>
             </FormField>
-            <FormField label="Date" required><input type="date" className="input" value={climateForm.date} onChange={setClimF('date')} required /></FormField>
+            <FormField label="Date" required>
+              <input type="date" className="input" value={climateForm.date} onChange={setClimF('date')} required />
+            </FormField>
           </div>
           <div className="grid grid-cols-2 gap-3">
-            <FormField label="Min Temp (°C)"><input type="number" className="input" placeholder="18" value={climateForm.temperatureMin} onChange={setClimF('temperatureMin')} /></FormField>
-            <FormField label="Max Temp (°C)"><input type="number" className="input" placeholder="28" value={climateForm.temperatureMax} onChange={setClimF('temperatureMax')} /></FormField>
-            <FormField label="Rainfall (mm)"><input type="number" className="input" placeholder="12.5" value={climateForm.rainfall} onChange={setClimF('rainfall')} /></FormField>
-            <FormField label="Humidity (%)"><input type="number" className="input" placeholder="75" value={climateForm.humidity} onChange={setClimF('humidity')} /></FormField>
+            <FormField label="Min Temp (°C)">
+              <input type="number" className="input" placeholder="18" value={climateForm.temperatureMin} onChange={setClimF('temperatureMin')} />
+            </FormField>
+            <FormField label="Max Temp (°C)">
+              <input type="number" className="input" placeholder="28" value={climateForm.temperatureMax} onChange={setClimF('temperatureMax')} />
+            </FormField>
+            <FormField label="Rainfall (mm)">
+              <input type="number" className="input" placeholder="12.5" value={climateForm.rainfall} onChange={setClimF('rainfall')} />
+            </FormField>
+            <FormField label="Humidity (%)">
+              <input type="number" className="input" placeholder="75" value={climateForm.humidity} onChange={setClimF('humidity')} />
+            </FormField>
           </div>
-          <FormField label="Condition"><input className="input" placeholder="Partly Cloudy" value={climateForm.condition} onChange={setClimF('condition')} /></FormField>
-          <FormField label="Farming Recommendation"><textarea className="input resize-none" rows={2} placeholder="Good conditions for planting..." value={climateForm.recommendation} onChange={setClimF('recommendation')} /></FormField>
-          <div className="flex gap-3"><button type="button" onClick={() => setClimateModal(false)} className="btn-secondary flex-1">Cancel</button><button type="submit" disabled={submitting} className="btn-primary flex-1 flex items-center justify-center gap-2">{submitting ? <><Spinner size="sm"/>Saving...</> : 'Save Data'}</button></div>
+          <FormField label="Condition">
+            <input className="input" placeholder="Partly Cloudy" value={climateForm.condition} onChange={setClimF('condition')} />
+          </FormField>
+          <FormField label="Farming Recommendation">
+            <textarea className="input resize-none" rows={2} placeholder="Good conditions for planting..." value={climateForm.recommendation} onChange={setClimF('recommendation')} />
+          </FormField>
+          <div className="flex gap-3">
+            <button type="button" onClick={() => setClimateModal(false)} className="btn-secondary flex-1">Cancel</button>
+            <button type="submit" disabled={submitting} className="btn-primary flex-1 flex items-center justify-center gap-2">
+              {submitting ? <><Spinner size="sm"/>Saving...</> : 'Save Data'}
+            </button>
+          </div>
         </form>
       </Modal>
     </div>
